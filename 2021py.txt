@@ -1,37 +1,7 @@
-
-def sendmail(message):
-    import smtplib
-    from email.mime.text import MIMEText
-
-    # 寄件者，收件者
-    from_addr = '810283@stu.nknush.kh.edu.tw'
-    to_addr = '810283@stu.nknush.kh.edu.tw'
-
-
-    smtpssl=smtplib.SMTP_SSL("smtp.gmail.com", 465)
-    smtpssl.login(from_addr, "E125803208")
-
-    msg = 'PM2.5=' + message
-    mime=MIMEText(msg, "plain", "utf-8")
-    mime["Subject"]="Python中文信件!!!(MIME)"
-    # 顯示的名稱
-    mime["From"]="PM2.5監視器"
-    mime["To"]= to_addr
-
-    smtpssl.sendmail(from_addr, to_addr, mime.as_string())
-    smtpssl.quit()
-
-while True:
-
-    import requests, json
-    import urllib3
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-    # 若來源資料為 https 則加上 verify=False 參數
-    response = requests.get('https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=json', verify=False)
-
-    sites = response.json()
-    for site in sites:
-        if site['Site'] == '復興':
-            sendmail(site['PM25'])
-            break
+git clone https://github.com/kejyun/github-page.git
+git checkout --orphan gh-pages
+git rm -rf .
+echo "<h1>KeJyun's Manually GitHub Page</h1>" > manually.html
+git add manually.html
+git commit -a -m "KeJyun's First Manually Github Page commit"
+git push origin gh-pages
