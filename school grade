@@ -7,39 +7,40 @@ from pathlib import Path
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+#------導入我們所需的資料庫
 
-driver = webdriver.Chrome()
+driver = webdriver.Chrome()#利用chomedriver開啟chrome，並將它存於driver變數
 
-username = '810283@stu.nknush.kh.edu.tw'
-password = 'E125803208'
-
-
-driver.get('https://www.google.com/?hl=zh_tw')
-time.sleep(2)
+username = '810283@stu.nknush.kh.edu.tw'#登入的帳號
+password = 'E125803208'#登入的密碼
 
 
-driver.find_element_by_id("gb_70").click()
+driver.get('https://www.google.com/?hl=zh_tw')#首先先前往google登入帳戶
+time.sleep(2)#適時暫停以免程式執行過快
+
+
+driver.find_element_by_id("gb_70").click()#找到登入這按鈕位於網頁裡的id標籤，並點擊
+time.sleep(1)#等待網頁跳轉
+
+user=driver.find_element_by_class_name("whsOnd.zHQkBf")#定位元素中若有空白須以來替代
+user.send_keys(username)#輸入帳號
 time.sleep(1)
 
-user=driver.find_element_by_class_name("whsOnd.zHQkBf")
-user.send_keys(username)
+driver.find_element_by_class_name("VfPpkd-RLmnJb").click()#找尋點擊標籤中的class來定位，並點擊
+time.sleep(2)
+
+pas=driver.find_element_by_class_name("whsOnd.zHQkBf")#輸入密碼的class位置
+pas.send_keys(password)#傳送密碼
 time.sleep(1)
 
-driver.find_element_by_class_name("VfPpkd-RLmnJb").click()
+driver.find_element_by_class_name("VfPpkd-RLmnJb").click()#點擊按鈕的class
 time.sleep(2)
 
-pas=driver.find_element_by_class_name("whsOnd.zHQkBf")
-pas.send_keys(password)
-time.sleep(1)
-
-driver.find_element_by_class_name("VfPpkd-RLmnJb").click()
+driver.get('https://khweb.ischool.com.tw/?school=nknush.kh.edu.tw&dn=stu.nknush.kh.edu.tw')#登入完成後前往要抓取成績的目標網站
 time.sleep(2)
 
-driver.get('https://khweb.ischool.com.tw/?school=nknush.kh.edu.tw&dn=stu.nknush.kh.edu.tw')
-time.sleep(2)
-
-pyautogui.moveTo(1023, 808) 
-pyautogui.click()
+pyautogui.moveTo(1023, 808) #由於查取成績的按鈕一直無法利用xpath定位，因此我們只好利用pyautogui來模擬滑鼠去點擊
+pyautogui.click()#移至指定座標後點擊
 time.sleep(5)
 
 
@@ -47,35 +48,33 @@ pyautogui.moveTo(441,488)
 pyautogui.click()
 time.sleep(2)
 
-driver.maximize_window()
+driver.maximize_window()#使視窗最大化，避免截圖後成績不完全
 time.sleep(2)
 
-driver.execute_script("document.body.style.zoom='0.1'")
+driver.execute_script("document.body.style.zoom='0.1'")#縮小內容自大小
 time.sleep(2)
 
 pyautogui.moveTo(441,488) 
-pyautogui.click()
+pyautogui.click()#移至指定座標後點擊
 
-for i in range(2): 
-  pyautogui.press('down')
+for i in range(2):
+  pyautogui.press('down')#模擬向下鍵兩次，使的成績能夠完整截圖
 
 
-pyautogui.moveTo(0,0) 
-time.sleep(1)
-
+pyautogui.moveTo(0,0)  #將滑鼠一致最左上角，座標為(0,0)，避免擋到截圖
+time.sleep(1)#適時暫停以免程式執行過快
 im = ImageGrab.grab(
-  bbox=(315, 179, 1585, 952))
+  bbox=(315, 179, 1585, 952))#擷取並裁切圖片，利用座標定位
 
-im.save("1.png")
+im.save("1.png")#儲存至1.png
 
 
-
-with open("1.png", "rb") as file:
+with open("1.png", "rb") as file:#開啟截圖照片的檔案
     filecontent=file.read()
 
 
-content='你的段考成績' 
-mime=MIMEImage(filecontent)
+content='你的段考成績' #主旨
+mime=MIMEImage(filecontent)#照片路徑
 
 mime["Subject"]="你要被當掉嘍" #撰寫郵件標題
 mime["From"]="810283@stu.nknush.kh.edu.tw" #撰寫你的暱稱或是信箱
@@ -86,11 +85,11 @@ msg=mime.as_string() #將msg將text轉成str
 smtp=smtplib.SMTP("smtp.gmail.com", 587)  #googl的ping
 smtp.ehlo() #申請身分
 smtp.starttls() #加密文件，避免私密信息被截取
-smtp.login("810283@stu.nknush.kh.edu.tw", "E125803208")
+smtp.login("810283@stu.nknush.kh.edu.tw", "E125803208")#登入驗證
 
-from_addr="810283@stu.nknush.kh.edu.tw"
-to_addr=["810283@stu.nknush.kh.edu.tw"]
+from_addr="810283@stu.nknush.kh.edu.tw"#傳送人
+to_addr=["810283@stu.nknush.kh.edu.tw"]#收件人
 
-smtp.sendmail(from_addr, to_addr, msg)
+smtp.sendmail(from_addr, to_addr, msg)#送出email
 
 
