@@ -51,7 +51,7 @@ time.sleep(2)
 driver.maximize_window()#使視窗最大化，避免截圖後成績不完全
 time.sleep(2)
 
-driver.execute_script("document.body.style.zoom='0.1'")#縮小內容自大小
+driver.execute_script("document.body.style.zoom='0.1'")#縮小內容字大小
 time.sleep(2)
 
 pyautogui.moveTo(441,488) 
