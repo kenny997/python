@@ -1,0 +1,96 @@
+from selenium import webdriver
+import pyautogui
+import time
+from PIL import Image
+import pyscreenshot as ImageGrab
+from pathlib import Path
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+
+driver = webdriver.Chrome()
+
+username = '810283@stu.nknush.kh.edu.tw'
+password = 'E125803208'
+
+
+driver.get('https://www.google.com/?hl=zh_tw')
+time.sleep(2)
+
+
+driver.find_element_by_id("gb_70").click()
+time.sleep(1)
+
+user=driver.find_element_by_class_name("whsOnd.zHQkBf")
+user.send_keys(username)
+time.sleep(1)
+
+driver.find_element_by_class_name("VfPpkd-RLmnJb").click()
+time.sleep(2)
+
+pas=driver.find_element_by_class_name("whsOnd.zHQkBf")
+pas.send_keys(password)
+time.sleep(1)
+
+driver.find_element_by_class_name("VfPpkd-RLmnJb").click()
+time.sleep(2)
+
+driver.get('https://khweb.ischool.com.tw/?school=nknush.kh.edu.tw&dn=stu.nknush.kh.edu.tw')
+time.sleep(2)
+
+pyautogui.moveTo(1023, 808) 
+pyautogui.click()
+time.sleep(5)
+
+
+pyautogui.moveTo(441,488) 
+pyautogui.click()
+time.sleep(2)
+
+driver.maximize_window()
+time.sleep(2)
+
+driver.execute_script("document.body.style.zoom='0.1'")
+time.sleep(2)
+
+pyautogui.moveTo(441,488) 
+pyautogui.click()
+
+for i in range(2): 
+  pyautogui.press('down')
+
+
+pyautogui.moveTo(0,0) 
+time.sleep(1)
+
+im = ImageGrab.grab(
+  bbox=(315, 179, 1585, 952))
+
+im.save("1.png")
+
+
+
+with open("1.png", "rb") as file:
+    filecontent=file.read()
+
+
+content='你的段考成績' 
+mime=MIMEImage(filecontent)
+
+mime["Subject"]="你要被當掉嘍" #撰寫郵件標題
+mime["From"]="810283@stu.nknush.kh.edu.tw" #撰寫你的暱稱或是信箱
+mime["To"]="810283@stu.nknush.kh.edu.tw" #撰寫你要寄的人
+
+msg=mime.as_string() #將msg將text轉成str
+
+smtp=smtplib.SMTP("smtp.gmail.com", 587)  #googl的ping
+smtp.ehlo() #申請身分
+smtp.starttls() #加密文件，避免私密信息被截取
+smtp.login("810283@stu.nknush.kh.edu.tw", "E125803208")
+
+from_addr="810283@stu.nknush.kh.edu.tw"
+to_addr=["810283@stu.nknush.kh.edu.tw"]
+
+smtp.sendmail(from_addr, to_addr, msg)
+
+
