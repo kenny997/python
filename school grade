@@ -25,22 +25,14 @@ time.sleep(2)#適時暫停以免程式執行過快
 driver.find_element_by_id("gb_70").click()#找到登入這按鈕位於網頁裡的id標籤，並點擊
 WebDriverWait(driver, 10, 0.3).until(EC.visibility_of_element_located((By.CLASS_NAME,'whsOnd.zHQkBf'))).send_keys(username)#在10秒內每隔0.3秒搜尋輸入帳號的元素CLASS是否存在，並送出帳號
 
-#user=driver.find_element_by_class_name("whsOnd.zHQkBf")#定位元素中若有空白須以來替代
-#user.send_keys(username)#輸入帳號
-#time.sleep(1)
-
 WebDriverWait(driver, 10, 0.3).until(EC.visibility_of_element_located((By.CLASS_NAME,'VfPpkd-RLmnJb'))).click()#找尋點擊標籤中的class來定位，並點擊
-#driver.find_element_by_class_name("VfPpkd-RLmnJb").click()#找尋點擊標籤中的class來定位，並點擊
 time.sleep(2)
 
-#輸入密碼的class位置，並傳送密碼
 pas=driver.find_element_by_class_name("whsOnd.zHQkBf")#輸入密碼的class位置
 pas.send_keys(password)#傳送密碼
-#time.sleep(1)
+
 
 WebDriverWait(driver, 10, 0.3).until(EC.visibility_of_element_located((By.CLASS_NAME,'VfPpkd-RLmnJb'))).click()#點擊按鈕的class
-#driver.find_element_by_class_name("VfPpkd-RLmnJb").click()#點擊按鈕的class
-#time.sleep(2)
 
 driver.get('https://khweb.ischool.com.tw/?school=nknush.kh.edu.tw&dn=stu.nknush.kh.edu.tw')#登入完成後前往要抓取成績的目標網站
 time.sleep(2)
