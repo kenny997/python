@@ -7,6 +7,9 @@ from pathlib import Path
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 #------導入我們所需的資料庫
 
 driver = webdriver.Chrome()#利用chomedriver開啟chrome，並將它存於driver變數
@@ -20,28 +23,31 @@ time.sleep(2)#適時暫停以免程式執行過快
 
 
 driver.find_element_by_id("gb_70").click()#找到登入這按鈕位於網頁裡的id標籤，並點擊
-time.sleep(1)#等待網頁跳轉
+WebDriverWait(driver, 10, 0.3).until(EC.visibility_of_element_located((By.CLASS_NAME,'whsOnd.zHQkBf'))).send_keys(username)#在10秒內每隔0.3秒搜尋輸入帳號的元素CLASS是否存在，並送出帳號
 
-user=driver.find_element_by_class_name("whsOnd.zHQkBf")#定位元素中若有空白須以來替代
-user.send_keys(username)#輸入帳號
-time.sleep(1)
+#user=driver.find_element_by_class_name("whsOnd.zHQkBf")#定位元素中若有空白須以來替代
+#user.send_keys(username)#輸入帳號
+#time.sleep(1)
 
-driver.find_element_by_class_name("VfPpkd-RLmnJb").click()#找尋點擊標籤中的class來定位，並點擊
+WebDriverWait(driver, 10, 0.3).until(EC.visibility_of_element_located((By.CLASS_NAME,'VfPpkd-RLmnJb'))).click()#找尋點擊標籤中的class來定位，並點擊
+#driver.find_element_by_class_name("VfPpkd-RLmnJb").click()#找尋點擊標籤中的class來定位，並點擊
 time.sleep(2)
 
+#輸入密碼的class位置，並傳送密碼
 pas=driver.find_element_by_class_name("whsOnd.zHQkBf")#輸入密碼的class位置
 pas.send_keys(password)#傳送密碼
-time.sleep(1)
+#time.sleep(1)
 
-driver.find_element_by_class_name("VfPpkd-RLmnJb").click()#點擊按鈕的class
-time.sleep(2)
+WebDriverWait(driver, 10, 0.3).until(EC.visibility_of_element_located((By.CLASS_NAME,'VfPpkd-RLmnJb'))).click()#點擊按鈕的class
+#driver.find_element_by_class_name("VfPpkd-RLmnJb").click()#點擊按鈕的class
+#time.sleep(2)
 
 driver.get('https://khweb.ischool.com.tw/?school=nknush.kh.edu.tw&dn=stu.nknush.kh.edu.tw')#登入完成後前往要抓取成績的目標網站
 time.sleep(2)
 
 pyautogui.moveTo(1023, 808) #由於查取成績的按鈕一直無法利用xpath定位，因此我們只好利用pyautogui來模擬滑鼠去點擊
 pyautogui.click()#移至指定座標後點擊
-time.sleep(5)
+time.sleep(3)
 
 
 pyautogui.moveTo(441,488) 
@@ -61,7 +67,7 @@ for i in range(2):
   pyautogui.press('down')#模擬向下鍵兩次，使的成績能夠完整截圖
 
 
-pyautogui.moveTo(0,0)  #將滑鼠一致最左上角，座標為(0,0)，避免擋到截圖
+pyautogui.moveTo(0,0)  #將滑鼠移至最左上角，座標為(0,0)，避免擋到截圖
 time.sleep(1)#適時暫停以免程式執行過快
 im = ImageGrab.grab(
   bbox=(315, 179, 1585, 952))#擷取並裁切圖片，利用座標定位
